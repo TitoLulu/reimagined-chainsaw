@@ -39,5 +39,6 @@ jobs:
           pip install --upgrade pip
           pip install dbt-redshift
           dbt deps
+          dbt seed
           dbt run
           dbt test
