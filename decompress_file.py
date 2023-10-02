@@ -41,5 +41,5 @@ def open_file(file_path, output_folder):
 
 
 file_path = os.path.join(os.getcwd(), "events.jsonl.bz2")
-output_folder = os.path.join(os.getcwd(), "eidu_events/seeds")
+output_folder = os.path.join(os.getcwd(), "reimagined_chainsaw/seeds")
 open_file(file_path=file_path, output_folder=output_folder)

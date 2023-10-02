@@ -1,47 +1,43 @@
-name: Events CI/CD
+name: Events
 
 on:
   schedule:
+    # run at 7AM every single day
+    # https://crontab.guru <-- for generating CRON expression
     - cron: "0 5 * * *"
   push:
-      branches:
-        # run on push to development branch
-        - main
+    branches:
+      - main
   pull_request:
-      branches:
-        - main
+    branches:
+      - main
   workflow_dispatch:
 
 env:
   DBT_PROFILES_DIR: ./
-  
   DBT_PG_USR: ${{ secrets.DBT_POSTGRES_USERNAME }}
   DBT_PG_PWD: ${{ secrets.DBT_POSTGRES_PWD }}
   DBT_PG_HOST: ${{ secrets.DBT_POSTGRES_HOST }}
   DBT_PG_DB: ${{ secrets.DBT_POSTGRES_DB }}
 
 jobs:
-  schedule_dbt_run:
-    name: schedule_dbt_run
+  build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Check out
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - uses: actions/setup-python@v2
-      with:
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
           python-version: "3.9.x"
 
-    - name: Install dependencies
-      working-directory: reimagined_chainsaw
-      run: |
-        pip install dbt-postgres
-        dbt deps
-
-    # dbt related commands here - run use --target prod/dev to run for specific environments
-    - name: Run dbt models
-      run: dbt run
-
-    - name: Test dbt models
-      run: dbt test
+      - name: Install dependencies and run dbt
+        working-directory: reimagined_chainsaw
+        run: |
+          pip install --upgrade pip
+          pip install dbt-redshift
+          dbt deps
+          dbt run
+          dbt test
