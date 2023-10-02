@@ -1,0 +1,12 @@
+reimagined_chainsaw:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: "{{ env_var('DBT_PG_HOST') }}"
+      user: "{{ env_var('DBT_PG_USR') }}"
+      password: "{{ env_var('DBT_PG_PWD') }}"
+      port: 5432
+      dbname: "{{ env_var('DBT_PG_DB') }}"
+      schema: staging
+      threads: 4
